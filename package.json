@@ -1,0 +1,60 @@
+{
+  "name": "vscode-nested-git-tracker",
+  "displayName": "Nested Git Tracker",
+  "description": "Automatically discovers and registers nested .git repositories in the VS Code Source Control panel.",
+  "version": "0.1.0",
+  "publisher": "raionrobotics",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["SCM Providers", "Other"],
+  "keywords": ["git", "source control", "nested", "monorepo", "submodule"],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "nested-git-tracker.rescan",
+        "title": "Nested Git Tracker: Rescan Workspace"
+      }
+    ],
+    "configuration": {
+      "title": "Nested Git Tracker",
+      "properties": {
+        "nestedGitTracker.maxDepth": {
+          "type": "number",
+          "default": 0,
+          "minimum": 0,
+          "description": "Maximum folder depth to scan for nested .git repositories. 0 means unlimited."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc --noEmit",
+    "build": "tsc -p tsconfig.build.json",
+    "watch": "tsc -watch -p tsconfig.build.json",
+    "lint": "eslint src",
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "@vscode/test-electron": "^2.3.0",
+    "@vscode/vsce": "^2.24.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yeodonghyeon1/vscode-nested-git-tracker.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yeodonghyeon1/vscode-nested-git-tracker/issues"
+  },
+  "homepage": "https://github.com/yeodonghyeon1/vscode-nested-git-tracker#readme"
+}

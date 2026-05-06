@@ -1,0 +1,86 @@
+{
+  "project": "vscode-nested-git-tracker",
+  "branchName": "ralph/nested-git-tracker",
+  "description": "VS Code extension that recursively finds nested .git folders and registers them with the built-in Git extension so they appear in Source Control automatically.",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Scaffold VS Code extension project",
+      "description": "As a developer, I need a compilable VS Code extension scaffold so that subsequent stories have a working foundation to build on.",
+      "acceptanceCriteria": [
+        "package.json has correct VS Code extension fields: publisher, engines.vscode, main, activationEvents (onStartupFinished), contributes stub",
+        "tsconfig.json targets ES2020, module CommonJS, strict mode on",
+        "src/extension.ts exports activate() and deactivate() stubs that compile without errors",
+        ".gitignore covers node_modules, out/, *.vsix",
+        ".vscode/launch.json configured to run Extension Host for local debugging",
+        "npm run compile (tsc --noEmit) passes with zero errors"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-002",
+      "title": "Implement recursive .git scanner",
+      "description": "As a developer, I need a scanner module that recursively finds all .git directories under a given root, so the extension knows which repos to register.",
+      "acceptanceCriteria": [
+        "src/scanner.ts exports findNestedGitRepos(rootDir: string, maxDepth: number): string[] — returns absolute paths of directories containing .git",
+        "Skips node_modules directories during traversal",
+        "Skips the root directory itself (only returns nested repos, not the root)",
+        "maxDepth 0 means unlimited recursion; positive number limits depth",
+        "Returns empty array when no nested .git found",
+        "npm run compile passes with zero errors"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-003",
+      "title": "Register discovered repos with vscode.git API",
+      "description": "As a developer, I want discovered repos registered with the built-in Git extension so they appear in the Source Control panel with full Git functionality.",
+      "acceptanceCriteria": [
+        "src/registrar.ts exports registerRepositories(uris: vscode.Uri[]): Promise<void>",
+        "Uses vscode.extensions.getExtension('vscode.git')!.exports.getAPI(1) to get the Git API",
+        "Calls git.openRepository(uri) for each discovered repo path",
+        "Logs each registered repo path to the Output Channel (Nested Git Tracker)",
+        "Gracefully handles case where vscode.git extension is not available (logs warning, does not throw)",
+        "activate() in extension.ts calls scanner then registrar on startup",
+        "npm run compile passes with zero errors"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-004",
+      "title": "Add maxDepth configuration setting",
+      "description": "As a developer, I want to configure the scan depth via settings.json so I can limit scanning in large workspaces.",
+      "acceptanceCriteria": [
+        "package.json contributes.configuration defines nestedGitTracker.maxDepth: type number, default 0, minimum 0, description explains 0 = unlimited",
+        "src/config.ts exports getMaxDepth(): number that reads the setting via vscode.workspace.getConfiguration",
+        "Invalid or missing value falls back to 0 (unlimited)",
+        "scanner.ts uses getMaxDepth() value",
+        "npm run compile passes with zero errors"
+      ],
+      "priority": 4,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-005",
+      "title": "Add manual rescan command",
+      "description": "As a developer, I want to trigger a rescan from the Command Palette so I can pick up newly created repos without restarting VS Code.",
+      "acceptanceCriteria": [
+        "package.json contributes.commands registers command nested-git-tracker.rescan with title 'Nested Git Tracker: Rescan Workspace'",
+        "Command handler re-runs scanner and registrar",
+        "Already-registered repo paths are skipped (no duplicate registration)",
+        "Output Channel logs count of newly found repos after rescan",
+        "npm run compile passes with zero errors"
+      ],
+      "priority": 5,
+      "passes": false,
+      "notes": ""
+    }
+  ]
+}
