@@ -10,6 +10,7 @@
   },
   "categories": ["SCM Providers", "Other"],
   "keywords": ["git", "source control", "nested", "monorepo", "submodule"],
+  "icon": "icon.png",
   "activationEvents": ["onStartupFinished"],
   "main": "./out/extension.js",
   "contributes": {
