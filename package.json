@@ -3,7 +3,7 @@
   "displayName": "Nested Git Tracker",
   "description": "Automatically discovers and registers nested .git repositories in the VS Code Source Control panel.",
   "version": "0.1.0",
-  "publisher": "raionrobotics",
+  "publisher": "duehdgus2362",
   "license": "MIT",
   "engines": {
     "vscode": "^1.85.0"
